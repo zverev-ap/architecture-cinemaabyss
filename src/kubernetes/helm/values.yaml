@@ -5,7 +5,7 @@ global:
 
 # Image pull secrets
 imagePullSecrets:
-  dockerconfigjson: ewoJImF1dGhzIjogewoJCSJnaGNyLmlvIjogewoJCQkiYXV0aCI6
+  dockerconfigjson: ewoJImF1dGhzIjogewogICAgICAiZ2hjci5pbyI6IHsKICAgICAgICAiYXV0aCI6ICJlblpsY21WMkxXRndPbWRvY0Y5bFpsTmFiRU16TVhaWmNqSjNibEptWjNkM1V6WTNWazE2UTNwS1FVc3hTSEJKUTJJPSIKICAgICAgfQogICAgfSwKCSJjcmVkc1N0b3JlIjogImRlc2t0b3AiLAoJImN1cnJlbnRDb250ZXh0IjogImRlc2t0b3AtbGludXgiLAoJInBsdWdpbnMiOiB7CgkJIi14LWNsaS1oaW50cyI6IHsKCQkJImVuYWJsZWQiOiAidHJ1ZSIKCQl9LAoJCSJkZWJ1ZyI6IHsKCQkJImhvb2tzIjogImV4ZWMiCgkJfSwKCQkic2NvdXQiOiB7CgkJCSJob29rcyI6ICJwdWxsLGJ1aWxkeCBidWlsZCIKCQl9Cgl9LAoJImZlYXR1cmVzIjogewoJCSJob29rcyI6ICJ0cnVlIgoJfQp9
 # Database configuration
 database:
   host: postgres
@@ -33,7 +33,7 @@ database:
 monolith:
   enabled: true
   image:
-    repository: ghcr.io/db-exp/cinemaabysstest/monolith
+    repository: ghcr.io/zverev-ap/architecture-cinemaabyss/monolith
     tag: latest
     pullPolicy: Always
   replicas: 1
@@ -53,7 +53,7 @@ monolith:
 proxyService:
   enabled: true
   image:
-    repository: ghcr.io/db-exp/cinemaabysstest/proxy-service
+    repository: ghcr.io/zverev-ap/architecture-cinemaabyss/proxy-service
     tag: latest
     pullPolicy: Always
   replicas: 1
@@ -73,7 +73,7 @@ proxyService:
 moviesService:
   enabled: true
   image:
-    repository: ghcr.io/db-exp/cinemaabysstest/movies-service
+    repository: ghcr.io/zverev-ap/architecture-cinemaabyss/movies-service
     tag: latest
     pullPolicy: Always
   replicas: 1
@@ -93,7 +93,7 @@ moviesService:
 eventsService:
   enabled: true
   image:
-    repository: ghcr.io/db-exp/cinemaabysstest/events-service
+    repository: ghcr.io/zverev-ap/architecture-cinemaabyss/events-service
     tag: latest
     pullPolicy: Always
   replicas: 1

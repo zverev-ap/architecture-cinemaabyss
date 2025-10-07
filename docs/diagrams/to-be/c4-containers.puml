@@ -1,0 +1,94 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "Пользователь")
+Container_Ext(recommender, "Система рекомендаций")
+Container_Ext(payment, "Система оплаты")
+
+Container(mobile_app, "Мобильное приложение", "React Native")
+Container(web_app, "Веб-приложение", "React")
+Container(tv_app, "TV-приложение", "React Native")
+
+System_Boundary(system, "Онлайн кинотеатр Кинобездна") {
+    Container(api_gateway, "API Gateway", "Golang")
+    ContainerQueue(queue, "Очередь сообщений", "Kafka")
+
+    Container(mobile_bff, "BFF для мобильного приложения", "Golang")
+    Container(web_bff, "BFF для веб-приложения", "Golang")
+    Container(tv_bff, "BFF для TV-приложения", "Golang")
+
+
+    Container_Boundary(auth, "Сервис доступов пользователей") {
+        Container(auth_service, "Сервис доступов пользователей", "golang")
+        ContainerDb(auth_db, "БД доступов", "postgres")
+        Rel(auth_service, auth_db, " ")
+    }
+
+    Container_Boundary(videos, "Сервис видео") {
+        Container(videos_service, "Сервис видео", "Golang")
+        ContainerDb(videos_db, "БД видео", "PostgreSQL")
+        Rel(videos_service, videos_db, " ")
+    }
+
+    Container_Boundary(users, "Сервис пользователей") {
+        Container(user_service, "Сервис пользователей", "Golang")
+        ContainerDb(user_db, "БД пользователей", "PostgreSQL")
+        Rel(user_service, user_db, " ")
+    }
+
+    Container_Boundary(recommendations, "Сервис рекомендаций") {
+        Container(recommendations_service, "Сервис рекомендаций", "Golang")
+        ContainerDb(recommendations_db, "БД рекомендаций", "PostgreSQL")
+        Rel(recommendations_service, recommendations_db, " ")
+    }
+
+    Container_Boundary(payments, "Сервис оплаты") {
+        Container(payment_service, "Сервис оплаты", "Golang")
+        ContainerDb(payment_db, "БД оплаты", "PostgreSQL")
+        Rel(payment_service, payment_db, " ")
+    }
+}
+
+Rel(user, mobile_app, " ")
+Rel(user, web_app, " ")
+Rel(user, tv_app, " ")
+
+Rel(mobile_app, api_gateway, "HTTP")
+Rel(web_app, api_gateway, "HTTP")
+Rel(tv_app, api_gateway, "HTTP")
+
+Rel(api_gateway, mobile_bff, "GRPC")
+Rel(api_gateway, web_bff, "GRPC")
+Rel(api_gateway, tv_bff, "GRPC")
+Rel(api_gateway, auth_service, "GRPC")
+
+Rel(mobile_bff, videos_service, "GRPC")
+Rel(mobile_bff, user_service, "GRPC")
+Rel(mobile_bff, recommendations_service, "GRPC")
+Rel(mobile_bff, payment_service, "GRPC")
+
+Rel(web_bff, videos_service, "GRPC")
+Rel(web_bff, user_service, "GRPC")
+Rel(web_bff, recommendations_service, "GRPC")
+Rel(web_bff, payment_service, "GRPC")
+
+Rel(tv_bff, videos_service, "GRPC")
+Rel(tv_bff, user_service, "GRPC")
+Rel(tv_bff, recommendations_service, "GRPC")
+Rel(tv_bff, payment_service, "GRPC")
+
+Rel(videos_service, queue, " ")
+Rel(user_service, queue, " ")
+Rel(recommendations_service, queue, " ")
+Rel(payment_service, queue, " ")
+
+Rel(queue, videos_service, " ")
+Rel(queue, user_service, " ")
+Rel(queue, recommendations_service, " ")
+Rel(queue, payment_service, " ")
+
+Rel(payment_service, payment, "HTTP")
+Rel(recommendations_service, recommender, "HTTP")
+
+@enduml
